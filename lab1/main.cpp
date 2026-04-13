@@ -62,7 +62,7 @@ int main() {
 	string fileC = "matrix_c.txt";
 	
 	vector<double> A, B, C;
-	int nB = 50;
+	int nB = 2000;
 	int nA = nB;
 	if (!read_matrix(fileA, A, nA) || !read_matrix(fileB, B, nB)) {
 		return 1;
