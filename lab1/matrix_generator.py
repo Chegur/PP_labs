@@ -10,7 +10,7 @@ def generate_matrix (n, outfilename):
             f.write(" ".join(f"{x:.6}" for x in row) + "\n")
 
 def main():
-    n = 50
+    n = 2000
     print(f"Генерация...")
     generate_matrix(n, "matrix_a.txt")
     generate_matrix(n, "matrix_b.txt")
