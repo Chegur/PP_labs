@@ -48,12 +48,12 @@
 ### Для 1
 ![](lab3/imgs/lab3_results.jpg)
 ### Для 2
-![](lab3/imgs/lab_results2.jpg)
+![](lab3/imgs/lab_results2.png)
 ### Для 4
-![](lab3/imgs/lab_results4.jpg)
+![](lab3/imgs/lab_results4.png)
 ### Для 8
-![](lab3/imgs/lab_results8.jpg)
+![](lab3/imgs/lab_results8.png)
 ### Для 16
-![](lab3/imgs/lab_results16.jpg)
+![](lab3/imgs/lab_results16.png)
 ## Обработка результатов
 ![](lab3/imgs/grafics.png)
