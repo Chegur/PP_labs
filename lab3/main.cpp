@@ -9,7 +9,6 @@
 
 using namespace std;
 
-// --- Чтение матрицы из файла ---
 bool read_matrix(const string& filename, vector<double>& matrix, int& n) {
     ifstream file(filename);
     if (!file.is_open()) return false;
@@ -21,16 +20,14 @@ bool read_matrix(const string& filename, vector<double>& matrix, int& n) {
     return true;
 }
 
-// --- Генерация случайной матрицы ---
 void generate_matrix(vector<double>& matrix, int n) {
     matrix.resize(n * n);
-    srand(42 + n); // детерминированный seed
+    srand(42 + n);
     for (int i = 0; i < n * n; ++i) {
         matrix[i] = static_cast<double>(rand() % 1000) / 100.0;
     }
 }
 
-// --- Запись матрицы в файл ---
 bool write_matrix(const string& filename, const vector<double>& matrix, int n) {
     ofstream file(filename);
     if (!file.is_open()) return false;
@@ -52,18 +49,15 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    // 🔧 КОНФИГУРАЦИЯ
-    const vector<int> SIZES = { 200, 400, 800, 1200, 1600, 2000 }; // ← размеры для теста
+    const vector<int> SIZES = { 200, 400, 800, 1200, 1600, 2000 };
     const bool GENERATE_IF_MISSING = true;
 
-    // Заголовок таблицы результатов (только rank 0)
     if (rank == 0) {
         cout << "N,Procs,Time_sec,GFLOPS,Output_File\n";
         cout.flush();
     }
 
     for (int n : SIZES) {
-        // Пропускаем размеры, которые не делятся на число процессов
         if (n % size != 0) {
             if (rank == 0) {
                 cerr << "[SKIP] N=" << n << " not divisible by MPI processes=" << size << "\n";
@@ -71,7 +65,6 @@ int main(int argc, char** argv) {
             continue;
         }
 
-        // Динамические имена файлов
         string FILE_A = format("matrix_a{}.txt", n);
         string FILE_B = format("matrix_b{}.txt", n);
         string FILE_C = format("matrix_c{}.txt", n);
@@ -82,7 +75,6 @@ int main(int argc, char** argv) {
         vector<double> local_C(local_n * n, 0.0);
         vector<double> A_full;
 
-        // Rank 0 читает или генерирует данные
         if (rank == 0) {
             A_full.resize(n * n);
             bool files_ok = !GENERATE_IF_MISSING &&
@@ -99,7 +91,6 @@ int main(int argc, char** argv) {
             }
         }
 
-        // Распределение данных
         MPI_Scatter(rank == 0 ? A_full.data() : nullptr, local_n * n, MPI_DOUBLE,
             local_A.data(), local_n * n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         MPI_Bcast(local_B.data(), n * n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -108,11 +99,9 @@ int main(int argc, char** argv) {
             A_full.clear(); A_full.shrink_to_fit();
         }
 
-        // Замер времени
         MPI_Barrier(MPI_COMM_WORLD);
         double t_start = MPI_Wtime();
 
-        // Локальное умножение (i-k-j порядок)
         for (int i = 0; i < local_n; ++i) {
             for (int k = 0; k < n; ++k) {
                 double r = local_A[i * n + k];
@@ -126,19 +115,16 @@ int main(int argc, char** argv) {
         double t_end = MPI_Wtime();
         double exec_time = t_end - t_start;
 
-        // Сбор результатов
         vector<double> C_full;
         if (rank == 0) C_full.resize(n * n);
         MPI_Gather(local_C.data(), local_n * n, MPI_DOUBLE,
             C_full.data(), local_n * n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-        // Вывод результатов (только rank 0)
         if (rank == 0) {
             write_matrix(FILE_C, C_full, n);
             double flops = 2.0 * n * n * n;
             double gflops = (flops / exec_time) / 1e9;
 
-            // CSV-строка для автоматического анализа
             cout << n << ","
                 << size << ","
                 << fixed << setprecision(6) << exec_time << ","
@@ -147,7 +133,6 @@ int main(int argc, char** argv) {
             cout.flush();
         }
 
-        // 🔁 Очистка памяти перед следующей итерацией
         local_A.clear(); local_B.clear(); local_C.clear();
         if (rank == 0) { C_full.clear(); A_full.clear(); }
     }
