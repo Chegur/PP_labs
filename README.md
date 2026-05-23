@@ -22,7 +22,46 @@
 
 ### Результаты 
 
-![](lab4/results.txt)
+Using GPU: NVIDIA GeForce GTX 1650 Super (Compute 7.5)
+N,BlockSize,Time_sec,GFLOPS,Output_File
+[GPU] Generating 200x200 matrices...
+200,8x8,0.002845,5.624,matrix_c200_8x8.txt
+200,16x16,0.002134,7.498,matrix_c200_16x16.txt
+200,32x32,0.002487,6.433,matrix_c200_32x32.txt
+[GPU] Generating 400x400 matrices...
+400,8x8,0.015234,16.805,matrix_c400_8x8.txt
+400,16x16,0.011456,22.348,matrix_c400_16x16.txt
+400,32x32,0.013287,19.267,matrix_c400_32x32.txt
+[GPU] Generating 600x600 matrices...
+600,8x8,0.042156,20.593,matrix_c600_8x8.txt
+600,16x16,0.031842,27.201,matrix_c600_16x16.txt
+600,32x32,0.037921,22.842,matrix_c600_32x32.txt
+[GPU] Generating 800x800 matrices...
+800,8x8,0.088234,23.287,matrix_c800_8x8.txt
+800,16x16,0.066891,30.623,matrix_c800_16x16.txt
+800,32x32,0.079145,25.934,matrix_c800_32x32.txt
+[GPU] Generating 1200x1200 matrices...
+1200,8x8,0.235421,29.401,matrix_c1200_8x8.txt
+1200,16x16,0.178234,38.756,matrix_c1200_16x16.txt
+1200,32x32,0.210156,32.891,matrix_c1200_32x32.txt
+[GPU] Generating 1600x1600 matrices...
+1600,8x8,0.485123,33.789,matrix_c1600_8x8.txt
+1600,16x16,0.368245,44.567,matrix_c1600_16x16.txt
+1600,32x32,0.432187,37.982,matrix_c1600_32x32.txt
+[GPU] Generating 2000x2000 matrices...
+2000,8x8,0.845234,37.891,matrix_c2000_8x8.txt
+2000,16x16,0.642156,49.834,matrix_c2000_16x16.txt
+2000,32x32,0.752341,42.567,matrix_c2000_32x32.txt
+
+### Grafics
+#### 1
+![](lab4/gflops_vs_n.png)
+#### 2
+![](lab4/time_vs_n.png)
+#### 3
+![](lab4/comparison_bars.png)
+#### 4
+![](lab4/efficiency.png)
 
 =================================================================================================
 
